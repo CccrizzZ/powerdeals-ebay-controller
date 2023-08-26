@@ -11,19 +11,16 @@ export class AuthController {
         return this.AuthService.getAuthURL()
     }
 
-    @Get('accepted/:code')
-    async acceptedAuth(@Req() req: Request): Promise<Request> {
-        console.log(req)
-        return req
+    // after login into ebay
+    @Get('accepted')
+    async acceptedAuth(@Query() param: Record<string, any>): Promise<string> {
+        if (!param.code) throw new Error('Incorrect validation code!')
+
+        return this.AuthService.getToken(param.code)
     }
 
     @Get('rejected')
     async Auth(): Promise<string> {
         return 'authentication failed'
-    }
-
-    @Get('getToken')
-    async getToken(@Body() body: AuthDto): Promise<any> {
-        return this.AuthService.getToken(body.code)
     }
 }
