@@ -29,8 +29,6 @@ export class AuthService {
 
     // step 2 get "code" query parameter and retrieve token
     async getToken(code: string): Promise<string> {
-        console.log(code)
-
         // get oauth token
         const token = await this.ebay.OAuth2.getToken(code)
 

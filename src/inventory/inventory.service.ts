@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosResponse } from 'axios';
 import { AuthService } from 'src/auth/auth.service';
+import { InventoryDto } from 'src/utilities/inventoryDto';
+import Ajv from 'ajv';
 
 @Injectable()
 export class InventoryService {
@@ -15,4 +17,16 @@ export class InventoryService {
     return this.auth.ebay.sell.inventory.getInventoryItem(sku)
   }
 
+  async addNewListing(inventory: any): Promise<any> {
+    console.log(inventory)
+
+    // this.auth.ebay.sell.inventory.createOrReplaceInventoryItem(
+    //   inventory.sku,
+
+    // )
+  }
+
+  async addNewListings(inventoryArr: InventoryDto[]): Promise<any> {
+    // this.auth.ebay.sell.inventory.bulkCreateOrReplaceInventoryItem([{},{}])
+  }
 }

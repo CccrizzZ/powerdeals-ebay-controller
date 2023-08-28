@@ -15,7 +15,6 @@ export class AuthController {
     @Get('accepted')
     async acceptedAuth(@Query() param: Record<string, any>): Promise<string> {
         if (!param.code) throw new Error('Incorrect validation code!')
-
         return this.AuthService.getToken(param.code)
     }
 
