@@ -1,43 +1,65 @@
-import { Controller, Get, Query, Put, Body, Req, RawBodyRequest } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Put,
+  Body,
+  Req,
+  HttpException,
+  HttpStatus,
+  Post,
+  Delete
+} from '@nestjs/common';
 import { InventoryService } from './inventory.service'
 import { InventoryDto } from 'src/utilities/inventoryDto';
-import Ajv from 'ajv/dist/core';
-import fs from 'fs'
-
-import * as inventory_schema from '../utilities/inventory_schema.json'
+import {
+  BulkMigrateListing,
+  SellInventoryItem,
+  BulkInventoryItem
+} from 'ebay-api/lib/types';
 
 @Controller('inventory')
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) { }
 
-  private readonly ajv: Ajv = new Ajv()
-
-  // get all listings default limit is 25
-  @Get('allListings')
+  // get all listings default limit is 25 
+  @Get('getAllListings')
   async getAllListings(@Query('limit') limit?: number): Promise<any> {
+    if (limit < 1) throw new HttpException('Limit have to be greater than 1', HttpStatus.FORBIDDEN)
     return this.inventoryService.getAllListings(limit)
   }
 
-  // get single listing by sku
-  @Get('allListings')
+  // get single listing by seller defined sku
+  @Get('getListingBySKU')
   async getListingBySKU(@Query('sku') sku?: string): Promise<any> {
     return this.inventoryService.getListingBySKU(sku)
   }
 
-  @Put('add')
-  async createListing(@Req() req: RawBodyRequest<Request>): Promise<any> {
-    // const schema = JSON.parse(inventory_schema.toString())
-
-    // const json = fs.readFileSync('src\utilities\inventory_schema.json')
-    // console.log(json)
-    // const res = this.ajv.validate((json).toString, req.body)
-    // console.log(res)
-    // console.log(req.body)
-    // return this.inventoryService.addNewListing(body)
+  // add one listing
+  @Put('addSingleListing')
+  async createListing(@Query('sku') sku: string, @Body() req: SellInventoryItem): Promise<any> {
+    console.log('sku' + sku)
+    return await this.inventoryService.createListing(sku, req)
   }
 
+  // add multiple listing
   @Put('bulkAdd')
-  async createListings(@Body() body: InventoryDto[]): Promise<any> {
-    return this.inventoryService.addNewListings(body)
+  async bulkCreateListings(@Body() body: BulkInventoryItem): Promise<any> {
+    return this.inventoryService.createListings(body)
+  }
+
+  // bulk migrate exist listing to inventory API Object
+  @Post('bulkMigrate')
+  async bulkMigrate(@Body() body: BulkMigrateListing): Promise<any> {
+    return this.inventoryService.bulkMigrateListing(body)
+  }
+
+  @Delete('deleteListing')
+  async deleteListing(@Query('sku') sku: string): Promise<any> {
+    try {
+      return await this.inventoryService.deleteListing(sku)
+    } catch (error) {
+      throw error
+    }
   }
 }

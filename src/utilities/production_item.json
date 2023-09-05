@@ -1,0 +1,72 @@
+{
+    "sku": "06814",
+    "locale": "en_CA",
+    "product": {
+        "title": "HK Gaming GK61 Mechanical Gaming Keyboard - Multi Color RGB (Brown Switch)",
+        "aspects": {
+            "Brand": [
+                "HK Gaming"
+            ],
+            "Type": [
+                "Gaming"
+            ],
+            "Unit Type": [
+                "Unit"
+            ],
+            "Color": [
+                "Black"
+            ],
+            "Model": [
+                "gk61"
+            ],
+            "Keyboard Layout": [
+                "QWERTY (Standard)"
+            ],
+            "Connectivity": [
+                "USB",
+                "USB-C"
+            ],
+            "Features": [
+                "Illuminated"
+            ],
+            "Material": [
+                "Plastic"
+            ],
+            "Country/Region of Manufacture": [
+                "Hong Kong"
+            ],
+            "Keyboard Language": [
+                "English"
+            ]
+        },
+        "imageUrls": [
+            "https://i.ebayimg.com/00/s/MTYwMFgxMjAw/z/~ZsAAOSwVlpk4UeJ/$_57.JPG?set_id=880000500F",
+            "https://i.ebayimg.com/00/s/MTYwMFgxMjAw/z/dLwAAOSwXHZk4UeJ/$_57.JPG?set_id=880000500F",
+            "https://i.ebayimg.com/00/s/MTYwMFgxMjAw/z/jDYAAOSwJsNk4UeI/$_57.JPG?set_id=880000500F",
+            "https://i.ebayimg.com/00/s/ODM5WDE1MDA=/z/yYMAAOSwCOdk4Udi/$_57.JPG?set_id=880000500F"
+        ]
+    },
+    "condition": "NEW",
+    "packageWeightAndSize": {
+        "dimensions": {
+            "width": 20,
+            "length": 30,
+            "height": 10,
+            "unit": "CENTIMETER"
+        },
+        "packageType": "PARCEL_OR_PADDED_ENVELOPE",
+        "weight": {
+            "value": 0.5,
+            "unit": "KILOGRAM"
+        }
+    },
+    "availability": {
+        "shipToLocationAvailability": {
+            "quantity": 5,
+            "allocationByFormat": {
+                "auction": 0,
+                "fixedPrice": 5
+            }
+        }
+    }
+}
