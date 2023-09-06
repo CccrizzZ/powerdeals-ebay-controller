@@ -5,8 +5,6 @@ import {
   Put,
   Body,
   Req,
-  HttpException,
-  HttpStatus,
   Post,
   Delete
 } from '@nestjs/common';
@@ -22,20 +20,34 @@ import {
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) { }
 
-  // get all listings default limit is 25 
+  // bulk migrate exist listing to inventory API Object
+  @Post('bulkMigrate')
+  async bulkMigrate(@Body() body: BulkMigrateListing): Promise<any> {
+    console.log(body)
+    return this.inventoryService.bulkMigrateListing(body)
+  }
+
   @Get('getAllListings')
-  async getAllListings(@Query('limit') limit?: number): Promise<any> {
-    if (limit < 1) throw new HttpException('Limit have to be greater than 1', HttpStatus.FORBIDDEN)
+  async getAllListings(@Query('limit') limit?: number, offset?: number): Promise<any> {
     return this.inventoryService.getAllListings(limit)
   }
 
-  // get single listing by seller defined sku
-  @Get('getListingBySKU')
-  async getListingBySKU(@Query('sku') sku?: string): Promise<any> {
+  @Get('getAllSku')
+  async getAllSku(@Query('limit') limit?: number, offset?: number): Promise<any> {
+    return this.inventoryService.getAllSku(limit)
+  }
+
+  @Get('getListingBySku')
+  async getListingBySku(@Query('sku') sku?: string): Promise<any> {
     return this.inventoryService.getListingBySKU(sku)
   }
 
-  // add one listing
+  @Get('allInventoryLocations')
+  async getAllInventoryLocations(@Query('limit') limit?: number, offset?: number) {
+    return this.inventoryService.getAllInventoryLocations(limit, offset)
+  }
+
+
   @Put('addSingleListing')
   async createListing(@Query('sku') sku: string, @Body() req: SellInventoryItem): Promise<any> {
     console.log('sku' + sku)
@@ -45,21 +57,11 @@ export class InventoryController {
   // add multiple listing
   @Put('bulkAdd')
   async bulkCreateListings(@Body() body: BulkInventoryItem): Promise<any> {
-    return this.inventoryService.createListings(body)
-  }
-
-  // bulk migrate exist listing to inventory API Object
-  @Post('bulkMigrate')
-  async bulkMigrate(@Body() body: BulkMigrateListing): Promise<any> {
-    return this.inventoryService.bulkMigrateListing(body)
+    return this.inventoryService.bulkCreateListings(body)
   }
 
   @Delete('deleteListing')
   async deleteListing(@Query('sku') sku: string): Promise<any> {
-    try {
-      return await this.inventoryService.deleteListing(sku)
-    } catch (error) {
-      throw error
-    }
+    return await this.inventoryService.deleteListing(sku)
   }
 }
