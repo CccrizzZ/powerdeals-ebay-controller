@@ -10,8 +10,13 @@ import {
   BulkInventoryItem,
   InventoryItemWithSkuLocale,
   Product,
-  InventoryItem
+  InventoryItem,
+  EbayOfferDetailsWithKeys
 } from 'ebay-api/lib/types';
+
+interface err {
+  message: string
+}
 
 @Injectable()
 export class InventoryService {
@@ -32,14 +37,14 @@ export class InventoryService {
     if (limit < 1) throw new HttpException('Limit have to be greater than 1', HttpStatus.FORBIDDEN)
   }
 
-  // getters //
+  // inventory getters //
   // get all listing items start from first inventory, limited item amount to limit (default 25)
   async getAllListings(limit?: number, offset?: number): Promise<any> {
     this.checkLimit(limit)
     return await this.auth.ebay.sell.inventory.getInventoryItems({ limit, offset })
   }
 
-  // get all listings sku
+  // get all listings sku, return an array of sku
   async getAllSku(limit?: number, offset?: number): Promise<string[]> {
     this.checkLimit(limit)
     const res = await this.auth.ebay.sell.inventory.getInventoryItems({ limit, offset })
@@ -60,8 +65,7 @@ export class InventoryService {
     return await this.auth.ebay.sell.inventory.getInventoryLocations({ limit, offset })
   }
 
-
-  // setters //
+  // inventory setters //
   // create single listing
   async createListing(sku: string, newItem: SellInventoryItem): Promise<any> {
     const res = await this.auth.ebay.sell.inventory.createOrReplaceInventoryItem(sku, newItem)
@@ -86,5 +90,35 @@ export class InventoryService {
   // delete single listing
   async deleteListing(sku: string): Promise<any> {
     return await this.auth.ebay.sell.inventory.deleteInventoryItem(sku)
+  }
+
+
+  // offers //
+  // get single offer
+  async getOffer(): Promise<any> {
+
+  }
+
+  // get multiple offers on single sku
+  async getOffers(sku: string, limit?: number, offset?: number): Promise<any> {
+    try {
+      return await this.auth.ebay.sell.inventory.getOffers({ sku, limit, offset })
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // create offer for inventory item object
+  async createOffer(req: EbayOfferDetailsWithKeys) {
+    return await this.auth.ebay.sell.inventory.createOffer(req)
+  }
+
+  // finally publish it to marketplace
+  async publishOffer(offerId: string) {
+    try {
+      return await this.auth.ebay.sell.inventory.publishOffer(offerId)
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -23,7 +23,8 @@ export class AuthService {
         sandbox: false,
         marketplaceId: eBayApi.MarketplaceId.EBAY_CA,
         scope: [
-            'https://api.ebay.com/oauth/api_scope/sell.inventory'
+            'https://api.ebay.com/oauth/api_scope/sell.inventory',
+            'https://api.ebay.com/oauth/api_scope/sell.account'
         ],
         ruName: process.env.ruName_PRD
     })

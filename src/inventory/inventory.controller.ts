@@ -13,7 +13,8 @@ import { InventoryDto } from 'src/utilities/inventoryDto';
 import {
   BulkMigrateListing,
   SellInventoryItem,
-  BulkInventoryItem
+  BulkInventoryItem,
+  EbayOfferDetailsWithKeys
 } from 'ebay-api/lib/types';
 
 @Controller('inventory')
@@ -47,7 +48,6 @@ export class InventoryController {
     return this.inventoryService.getAllInventoryLocations(limit, offset)
   }
 
-
   @Put('addSingleListing')
   async createListing(@Query('sku') sku: string, @Body() req: SellInventoryItem): Promise<any> {
     console.log('sku' + sku)
@@ -62,6 +62,26 @@ export class InventoryController {
 
   @Delete('deleteListing')
   async deleteListing(@Query('sku') sku: string): Promise<any> {
-    return await this.inventoryService.deleteListing(sku)
+    return this.inventoryService.deleteListing(sku)
+  }
+
+  @Post('createOffer')
+  async createOffer(@Body() body: EbayOfferDetailsWithKeys): Promise<any> {
+    return this.inventoryService.createOffer(body)
+  }
+
+  @Get('getOffer')
+  async getOffer() {
+
+  }
+
+  @Get('getOffers')
+  async getOffers(@Query('sku') sku?: string, @Query('limit') limit?: number, @Query('offset') offset?: number) {
+    return this.inventoryService.getOffers(sku, limit, offset)
+  }
+
+  @Post('publishOffer')
+  async publishOffer(@Query('offerId') offerId: string): Promise<any> {
+
   }
 }
