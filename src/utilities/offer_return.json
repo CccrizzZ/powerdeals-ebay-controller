@@ -1,0 +1,29 @@
+
+{
+    "offerId": "1*********1",
+    "sku": "3***********5",
+    "marketplaceId": "EBAY_US",
+    "format": "FIXED_PRICE",
+    "availableQuantity": 70,
+    "categoryId": "30120",
+    "listing": {
+        "listingId": "2*********1",
+        "listingStatus": "ACTIVE",
+        "soldQuantity": 5
+    },
+    "listingDescription": "Lumia phone with a stunning 5.7 inch Quad HD display and a powerful octa-core processor.",
+    "listingPolicies": {
+        "fulfillmentPolicyId": "3*********0",
+        "paymentPolicyId": "3*********0",
+        "returnPolicyId": "3*********0"
+    },
+    "pricingSummary": {
+        "price": {
+            "currency": "USD",
+            "value": "260.00"
+        }
+    },
+    "quantityLimitPerBuyer": 2,
+    "status": "PUBLISHED",
+    "includeCatalogProductDetails": false
+}

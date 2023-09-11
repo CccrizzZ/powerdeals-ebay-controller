@@ -11,7 +11,8 @@ import {
   InventoryItemWithSkuLocale,
   Product,
   InventoryItem,
-  EbayOfferDetailsWithKeys
+  EbayOfferDetailsWithKeys,
+  EbayOfferDetailsWithId
 } from 'ebay-api/lib/types';
 
 interface err {
@@ -95,8 +96,8 @@ export class InventoryService {
 
   // offers //
   // get single offer
-  async getOffer(): Promise<any> {
-
+  async getOffer(offerId: string): Promise<any> {
+    return await this.auth.ebay.sell.inventory.getOffer(offerId)
   }
 
   // get multiple offers on single sku
@@ -117,6 +118,31 @@ export class InventoryService {
   async publishOffer(offerId: string) {
     try {
       return await this.auth.ebay.sell.inventory.publishOffer(offerId)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  // increase or decrease available quantity for certain listing
+  async manipulateAvailableQuantity(offerId: string, difference: number): Promise<string> {
+    if (!Number.isInteger(difference)) throw new Error('difference have to be an integer') 
+    if (difference === 0) throw new Error('difference have to be greater than 1')
+
+    // grab the existing details update the available quantity
+    const details: EbayOfferDetailsWithKeys = await this.auth.ebay.sell.inventory.getOffer(offerId)
+    details.availableQuantity + difference
+
+    // update offer and return new quantity
+    await this.auth.ebay.sell.inventory.updateOffer(offerId, details)
+    return `Available Quantity Increased By ${difference}`
+  }
+
+  async withdrawOffer(offerId: string): Promise<boolean> {
+    try {
+      const res = await this.auth.ebay.sell.inventory.withdrawOffer(offerId)
+      if (res.listingId) {
+        return true
+      }
     } catch (error) {
       throw error
     }
